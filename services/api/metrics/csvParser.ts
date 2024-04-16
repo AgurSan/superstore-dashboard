@@ -15,7 +15,7 @@ interface Row {
 }
 
 // Classe CsvParser qui gère la lecture et le parsing du fichier CSV
-export class csvParser {
+export class CsvParser {
   // Méthode pour parser les données du CSV
   async parseData(): Promise<Row[]> {
     return new Promise<Row[]>((resolve, reject) => { // Retourne une promesse de tableau de lignes

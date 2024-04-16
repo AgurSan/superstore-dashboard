@@ -1,8 +1,8 @@
-import { dataService } from './dataService';
+import { DataService } from './dataService';
 
 // Classe MetricsService qui contient la logique pour calculer les métriques
-export class metricsService {
-  constructor(private dataService: dataService) {}
+export class MetricsService {
+  constructor(private dataService: DataService) {}
 
   // Méthode pour calculer le revenu total
   async getTotalRevenue() {
