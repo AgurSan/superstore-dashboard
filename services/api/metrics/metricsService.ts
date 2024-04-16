@@ -1,7 +1,7 @@
 import { dataService } from './dataService';
 
 // Classe MetricsService qui contient la logique pour calculer les métriques
-export class MetricsService {
+export class metricsService {
   constructor(private dataService: dataService) {}
 
   // Méthode pour calculer le revenu total
