@@ -1,49 +1,46 @@
-import fs from 'fs'; // Importation du module 'fs' pour la gestion des fichiers
-import csv from 'csv-parser'; // Importation du module 'csv-parser' pour parser le CSV
+import fs from 'fs';
+import csv from 'csv-parser';
 
 // Interface représentant la structure d'une ligne du CSV
 interface Row {
-  rowID: number;
-  orderID: string;
-  orderDate: string;
-  customerID: string;
-  state: string;
-  region: string;
-  productID: string;
-  sales: number;
-  quantity: number;
+  'Row ID': number;
+  'Order ID': string;
+  'Order Date': Date;
+  'Customer ID': string;
+  'State': string;
+  'Region': string;
+  'Product ID': string;
+  'Sales': number;
+  'Quantity': number;
 }
 
 // Classe CsvParser qui gère la lecture et le parsing du fichier CSV
 export class CsvParser {
-  // Méthode pour parser les données du CSV
   async parseData(): Promise<Row[]> {
-    return new Promise<Row[]>((resolve, reject) => { // Retourne une promesse de tableau de lignes
-      const datas: Row[] = []; // Initialise un tableau pour stocker les données parsées
-      const stream = fs.createReadStream('public/dataset.csv'); // Crée un flux de lecture du fichier CSV
+    return new Promise<Row[]>((resolve, reject) => {
+      const datas: Row[] = [];
+      const stream = fs.createReadStream('public/dataset.csv');
 
-      // Utilisation de csv-parser pour parser les données CSV ligne par ligne
-      stream.pipe(csv())
-        .on('data', (data) => { // Lorsqu'une ligne est parsée
-          // Convertit les données en objet de type Row et les ajoute au tableau datas
+      stream.pipe(csv({ mapHeaders: ({ header }) => header.trim() }))
+        .on('data', (data) => {
           const rowData: Row = {
-            rowID: parseInt(data.rowID),
-            orderID: data.orderID,
-            orderDate: data.orderDate,
-            customerID: data.customerID,
-            state: data.state,
-            region: data.region,
-            productID: data.productID,
-            sales: parseFloat(data.sales),
-            quantity: parseInt(data.quantity)
+            'Row ID': parseInt(data['Row ID']),
+            'Order ID': data['Order ID'],
+            'Order Date': new Date (data['Order Date']),
+            'Customer ID': data['Customer ID'],
+            'State': data['State'],
+            'Region': data['Region'],
+            'Product ID': data['Product ID'],
+            'Sales': parseFloat(data['Sales']),
+            'Quantity': parseInt(data['Quantity'])
           };
-          datas.push(rowData); // Ajoute l'objet Row au tableau datas
+          datas.push(rowData);
         })
-        .on('end', () => { // Lorsque toutes les lignes ont été lues et parsées
-          resolve(datas); // Résout la promesse avec le tableau complet de données parsées
+        .on('end', () => {
+          resolve(datas);
         })
-        .on('error', (error) => { // En cas d'erreur lors de la lecture ou du parsing du CSV
-          reject(error); // Rejette la promesse avec l'erreur rencontrée
+        .on('error', (error) => {
+          reject(error);
         });
     });
   }
