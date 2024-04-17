@@ -1,10 +1,13 @@
 import { CsvParser } from '../services/api/metrics/csvParser';
+import { DataService } from '../services/api/metrics/dataService';
 
 describe('CsvParser', () => {
   let csvParser: CsvParser;
+  let dataService: DataService;
 
   beforeEach(() => {
     csvParser = new CsvParser();
+    dataService = new DataService(csvParser);
   });
 
   it('should parse CSV data correctly', async () => {
@@ -32,4 +35,13 @@ describe('CsvParser', () => {
     const parsedData = await csvParser.parseData();
     expect(typeof parsedData[0].Quantity).toBe('number');
   });
+
+  // Tests for DataService
+
+  it('should return data from CSV parser', async () => {
+    const data = await dataService.getData();
+    expect(data).toBeDefined();
+    expect(data.length).toBeGreaterThan(0);
+  });
+
 });
