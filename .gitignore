@@ -6,10 +6,8 @@
 .pnp.js
 .yarn/install-state.gz
 
-# Jest
-/coverage/
-/jest.config.js
-/__tests__/
+# testing
+/coverage
 
 # next.js
 /.next/
