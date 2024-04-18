@@ -2,6 +2,18 @@ import { CsvParser } from '../services/api/metrics/csvParser';
 import { DataService } from '../services/api/metrics/dataService';
 import { MetricsService } from '../services/api/metrics/metricsService';
 
+interface Row {
+  'Row ID': number;
+  'Order ID': string;
+  'Order Date': Date;
+  'Customer ID': string;
+  'State': string;
+  'Region': string;
+  'Product ID': string;
+  'Sales': number;
+  'Quantity': number;
+}
+
 describe('CsvParser', () => {
   let csvParser: CsvParser;
 
@@ -48,6 +60,23 @@ describe('DataService', () => {
     const data = await dataService.getData();
     expect(data).toBeDefined();
     expect(data.length).toBeGreaterThan(0);
+  });
+
+  it('should have a method getData that returns an array of Row objects', async () => {
+    const data = await dataService.getData();
+    expect(Array.isArray(data)).toBe(true);
+    if (data.length > 0) {
+      const firstRow: Row = data[0];
+      expect(typeof firstRow['Row ID']).toBe('number');
+      expect(typeof firstRow['Order ID']).toBe('string');
+      expect(firstRow['Order Date']).toBeInstanceOf(Date);
+      expect(typeof firstRow['Customer ID']).toBe('string');
+      expect(typeof firstRow['State']).toBe('string');
+      expect(typeof firstRow['Region']).toBe('string');
+      expect(typeof firstRow['Product ID']).toBe('string');
+      expect(typeof firstRow['Sales']).toBe('number');
+      expect(typeof firstRow['Quantity']).toBe('number');
+    }
   });
 });
 
