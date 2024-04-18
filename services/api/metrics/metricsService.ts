@@ -35,20 +35,10 @@ export class MetricsService {
   return uniqueCustomers;
 }
 
-  async getMetricsByState() {
+  async getDataByState(state: string) {
     const data = await this.dataService.getData();
-    const metricsByState = data.reduce((acc, item) => {
-      if (!acc[item.state]) {
-        acc[item.state] = {
-          numOrders: 0,
-          totalRevenue: 0,
-        };
-      }
-      acc[item.state].numOrders++;
-      acc[item.state].totalRevenue += item.price;
-      return acc;
-    }, {});
-    return metricsByState;
+    const filteredData = data.filter(item => item['State'] === state);
+    return filteredData;
   }
 
   // Méthode pour obtenir les métriques par date de commande
