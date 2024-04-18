@@ -29,12 +29,22 @@ export class MetricsService {
 
   // Méthode pour obtenir le nombre de clients uniques
   async getUniqueCustomers() {
+<<<<<<< Updated upstream
     const data = await this.dataService.getData();
     const uniqueCustomers = [...new Set(data.map((item) => item.customer))].length;
     return uniqueCustomers;
   }
 
   // Méthode pour obtenir les métriques par état
+=======
+  const data = await this.dataService.getData();
+  const customerIds = data.map((item) => item['Customer ID']).filter((customerId) => customerId);
+  const uniqueCustomers = new Set(customerIds).size;
+  return uniqueCustomers;
+}
+
+
+>>>>>>> Stashed changes
   async getMetricsByState() {
     const data = await this.dataService.getData();
     const metricsByState = data.reduce((acc, item) => {
@@ -53,6 +63,7 @@ export class MetricsService {
 
   // Méthode pour obtenir les métriques par date de commande
   async getMetricsByOrderDate() {
+<<<<<<< Updated upstream
     const data = await this.dataService.getData();
     const metricsByOrderDate = data.reduce((acc, item) => {
       const date = new Date(item.orderDate).toISOString().split('T')[0];
@@ -68,4 +79,43 @@ export class MetricsService {
     }, {});
     return metricsByOrderDate;
   }
+=======
+  interface Row {
+    'Row ID': number;
+    'Order ID': string;
+    'Order Date': Date;
+    'Customer ID': string;
+    'State': string;
+    'Region': string;
+    'Product ID': string;
+    'Sales': number;
+    'Quantity': number;
+  }
+
+  const data = await this.dataService.getData();
+  const metricsByOrderDate = data.reduce((acc: Record<string, { numOrders: number; totalRevenue: number }>, row: Row) => {
+    // Convertir la date de la commande en une chaîne de caractères représentant la date (sans l'heure)
+    const orderDate = row['Order Date'].toISOString().split('T')[0];
+    const totalPrice = row['Sales'] * row['Quantity'];
+    if (!acc[orderDate]) {
+      acc[orderDate] = {
+        numOrders: 0,
+        totalRevenue: 0,
+      };
+    }
+
+    // Mettre à jour les métriques pour la date de commande actuelle
+    acc[orderDate].numOrders++;
+    acc[orderDate].totalRevenue += totalPrice;
+
+    return acc;
+  }, {});
+
+  console.log(metricsByOrderDate); // Ajoute cette ligne pour afficher les données calculées
+
+  return metricsByOrderDate;
+}
+
+
+>>>>>>> Stashed changes
 }
