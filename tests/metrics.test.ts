@@ -14,13 +14,6 @@ interface Row {
   'Quantity': number;
 }
 
-interface MetricsByState {
-  [state: string]: {
-    numOrders: number;
-    totalRevenue: number;
-  };
-}
-
 describe('CsvParser', () => {
   let csvParser: CsvParser;
 
