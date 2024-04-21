@@ -1,5 +1,17 @@
 import { DataService } from './dataService';
 
+interface Row {
+  'Row ID': number;
+  'Order ID': string;
+  'Order Date': Date;
+  'Customer ID': string;
+  'State': string;
+  'Region': string;
+  'Product ID': string;
+  'Sales': number;
+  'Quantity': number;
+}
+
 // Classe MetricsService qui contient la logique pour calculer les métriques
 export class MetricsService {
   constructor(private dataService: DataService) {}
@@ -42,40 +54,12 @@ export class MetricsService {
   }
 
   // Méthode pour obtenir les métriques par date de commande
-  async getMetricsByOrderDate() {
-    interface Row {
-      'Row ID': number;
-      'Order ID': string;
-      'Order Date': Date;
-      'Customer ID': string;
-      'State': string;
-      'Region': string;
-      'Product ID': string;
-      'Sales': number;
-      'Quantity': number;
-    }
-
-    const data = await this.dataService.getData();
-    const metricsByOrderDate = data.reduce((acc: Record<string, { numOrders: number; totalRevenue: number }>, row: Row) => {
-      // Convertir la date de la commande en une chaîne de caractères représentant la date (sans l'heure)
-      const orderDate = row['Order Date'].toISOString().split('T')[0];
-      const totalPrice = row['Sales'] * row['Quantity'];
-      if (!acc[orderDate]) {
-        acc[orderDate] = {
-          numOrders: 0,
-          totalRevenue: 0,
-        };
-      }
-
-      // Mettre à jour les métriques pour la date de commande actuelle
-      acc[orderDate].numOrders++;
-      acc[orderDate].totalRevenue += totalPrice;
-
-      return acc;
-    }, {});
-
-    console.log(metricsByOrderDate); // Ajoute cette ligne pour afficher les données calculées
-
-    return metricsByOrderDate;
-  }
+  async getMetricsByOrderDate(date: Date): Promise<{ [key: string]: Row[] }> {
+  const data = await this.dataService.getData();
+  const filteredData = data.filter((item: Row) => {
+    const orderDate = new Date(item['Order Date']);
+    return orderDate.getTime() === date.getTime();
+  });
+  return { [date.toISOString()]: filteredData };
+}
 }
