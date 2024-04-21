@@ -1,8 +1,8 @@
-## Fonctionnement de l'API
+# Fonctionnement de l'API
 
 Cette API récupère des données à partir d'un fichier CSV qui contient des informations sur les commandes passées dans plusieurs magasins. Elle fournit ensuite différentes métriques basées sur ces données, telles que le revenu total, le revenu moyen par commande, le nombre total de commandes, le nombre de clients uniques, ainsi que des données filtrées par état et par date de commande.
 
-### Données
+## Données
 
 Les données sont stockées dans un fichier CSV et sont structurées selon une interface définie, qui inclut les informations suivantes pour chaque commande :
 
