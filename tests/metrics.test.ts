@@ -14,6 +14,13 @@ interface Row {
   'Quantity': number;
 }
 
+interface MetricsByState {
+  [state: string]: {
+    numOrders: number;
+    totalRevenue: number;
+  };
+}
+
 describe('CsvParser', () => {
   let csvParser: CsvParser;
 
@@ -111,13 +118,26 @@ describe('MetricsService', () => {
     expect(uniqueCustomers).toBeGreaterThan(0);
   });
 
-  it('should get metrics by state correctly', async () => {
-    const metricsByState = await metricsService.getMetricsByState();
-    expect(metricsByState).toBeDefined();
+  it('should return data by state', async () => {
+    const state = 'California';
+    const data = await metricsService.getDataByState(state);
+    expect(data).toBeDefined();
+    expect(Array.isArray(data)).toBe(true);
+    data.forEach((item: Row) => {
+      expect(item['State']).toBe(state);
+    });
   });
 
   it('should get metrics by order date correctly', async () => {
-    const metricsByOrderDate = await metricsService.getMetricsByOrderDate();
+    const orderDate = new Date('2023-04-15');
+    const metricsByOrderDate = await metricsService.getMetricsByOrderDate(orderDate);
     expect(metricsByOrderDate).toBeDefined();
+    expect(Object.keys(metricsByOrderDate).length).toBeGreaterThan(0);
+    const dataForDate = metricsByOrderDate[orderDate.toISOString()];
+    expect(dataForDate).toBeDefined();
+    expect(Array.isArray(dataForDate)).toBe(true);
+    dataForDate.forEach((item: Row) => {
+      expect(new Date(item['Order Date']).toISOString()).toBe(orderDate.toISOString());
+    });
   });
 });

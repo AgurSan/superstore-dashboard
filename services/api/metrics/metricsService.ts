@@ -19,16 +19,16 @@ export class MetricsService {
   // Méthode pour calculer le revenu total
   async getTotalRevenue() {
     const data = await this.dataService.getData();
-    const totalRevenue = data.reduce((acc, item) => acc + item.price, 0);
+    const totalRevenue = data.reduce((acc, item) => acc + item.Sales * item.Quantity, 0);
     return totalRevenue;
   }
 
   // Méthode pour calculer le revenu moyen par commande
   async getAvgRevenuePerOrder() {
     const data = await this.dataService.getData();
-    const totalRevenue = data.reduce((acc, item) => acc + item.price, 0);
-    const numOrders = data.length;
-    const avgRevenuePerOrder = totalRevenue / numOrders;
+    const totalRevenue = data.reduce((acc, item) => acc + item.Sales * item.Quantity, 0);
+    const totalQuantity = data.reduce((acc, item) => acc + item.Quantity, 0);
+    const avgRevenuePerOrder = totalRevenue / totalQuantity;
     return avgRevenuePerOrder;
   }
 
