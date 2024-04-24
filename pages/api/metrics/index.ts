@@ -1,6 +1,8 @@
-import { CsvParser } from './csvParser';
-import { DataService } from './dataService';
-import { MetricsService } from './metricsService';
+import { CsvParser } from '../../../services/csvParser';
+import { DataService } from '../../../services/dataService';
+import { MetricsService } from '../../../services/metricsService';
+import express from 'express';
+const app = express();
 
 //point d'entrée de l'api
 
@@ -88,3 +90,8 @@ export async function handler(req: Request, res: Response) {
       res.status(404).json({ error: 'Not found' });
   }
 }
+
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});

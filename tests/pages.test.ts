@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { CsvParser } from '../services/api/metrics/csvParser';
-import { DataService } from '../services/api/metrics/dataService';
-import { MetricsService } from '../services/api/metrics/metricsService';
-import * as metricsControllers from '../services/api/metrics/index';
+import { CsvParser } from '../services/csvParser';
+import { DataService } from '../services/dataService';
+import { MetricsService } from '../services/metricsService';
+import * as metricsControllers from '../pages/api/metrics/index';
 const {
   getTotalRevenue,
   getAvgRevenuePerOrder,

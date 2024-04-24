@@ -1,6 +1,7 @@
-import { CsvParser } from '../services/api/metrics/csvParser';
-import { DataService } from '../services/api/metrics/dataService';
-import { MetricsService } from '../services/api/metrics/metricsService';
+import fs from 'fs';
+import { CsvParser } from '../services/csvParser';
+import { DataService } from '../services/dataService';
+import { MetricsService } from '../services/metricsService';
 
 interface Row {
   'Row ID': number;
