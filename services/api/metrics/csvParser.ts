@@ -24,7 +24,7 @@ export class CsvParser {
           const rowData: Row = {
             'Row ID': parseInt(data['Row ID']),
             'Order ID': data['Order ID'],
-            'Order Date': new Date (data['Order Date']),
+            'Order Date': new Date(Date.parse(data['Order Date'])),
             'Customer ID': data['Customer ID'],
             'State': data['State'],
             'Region': data['Region'],
@@ -40,5 +40,6 @@ export class CsvParser {
         .on('error', (error) => {
           reject(error);
         });
-    }
+    });
+  }
 }
